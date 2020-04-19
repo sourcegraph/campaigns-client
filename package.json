@@ -1,0 +1,70 @@
+{
+  "name": "@sourcegraph/campaigns-client",
+  "description": "API client for Sourcegraph campaigns",
+  "version": "0.0.0-DEVELOPMENT",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sourcegraph/campaigns-client.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "graphql": "get-graphql-schema https://sourcegraph.com/.api/graphql --json | gql2ts -o src/sourcegraph.graphql.d.ts",
+    "test": "nyc mocha",
+    "semantic-release": "semantic-release",
+    "prettier": "prettier '**/*.{js?(on),ts?(x),scss,md,yml}' --write --list-different",
+    "prettier-check": "npm run prettier -- --write=false",
+    "eslint": "eslint './src/*.ts?(x)' './*.ts?(x)'",
+    "build": "tsc -p .",
+    "watch": "tsc -p . -w"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts?(x)"
+    ],
+    "exclude": [
+      "**/*.test.ts?(x)"
+    ],
+    "extension": [
+      ".tsx",
+      ".ts"
+    ]
+  },
+  "mocha": {
+    "require": "ts-node/register",
+    "spec": "src/**/*.test.ts"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@sourcegraph/eslint-config": "^0.16.0",
+    "@sourcegraph/prettierrc": "^3.0.3",
+    "@sourcegraph/tsconfig": "^4.0.1",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.13.0",
+    "eslint": "^6.8.0",
+    "get-graphql-schema": "^2.1.2",
+    "gql2ts": "^1.10.1",
+    "husky": "^4.2.5",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.1",
+    "prettier": "^2.0.4",
+    "semantic-release": "^17.0.6",
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3"
+  }
+}

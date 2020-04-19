@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "TypeScript: watch",
+      "type": "process",
+      "group": "build",
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true,
+      "command": ["node_modules/.bin/tsc"],
+      "args": ["--build", ".", "--watch", "--incremental"],
+      "runOptions": {
+        "runOn": "folderOpen",
+      },
+    },
+  ],
+}
