@@ -59,20 +59,46 @@ function dataOrThrowErrors<T extends GQL.IQuery | GQL.IMutation>(result: GraphQL
     return result.data
 }
 
-export const requestGraphQL = async <T extends GQL.IQuery | GQL.IMutation>(
-    query: string,
-    variables: { [name: string]: unknown }
-): Promise<T> => {
-    const resp = await fetch('https://sourcegraph.com/.api/graphql', {
+export const SOURCEGRAPH_URL = (process.env.SOURCEGRAPH_URL || 'https://sourcegraph.com').replace(/\/$/, '')
+export const SOURCEGRAPH_AUTH_HEADERS: HeadersInit = process.env.SOURCEGRAPH_TOKEN
+    ? {
+          Authorization: `token ${process.env.SOURCEGRAPH_TOKEN || ''}`,
+      }
+    : {}
+
+type RequestGraphQL = (query: string, variables: { [name: string]: unknown }) => Promise<unknown>
+let extensionHostRequestGraphQL: RequestGraphQL
+try {
+    /* eslint-disable @typescript-eslint/no-var-requires */
+    /* eslint-disable @typescript-eslint/no-require-imports */
+    const sourcegraph = require('sourcegraph')
+    /* eslint-enable @typescript-eslint/no-var-requires */
+    /* eslint-enable @typescript-eslint/no-require-imports */
+    extensionHostRequestGraphQL = (query, variables) =>
+        sourcegraph.commands.executeCommand('queryGraphQL', query, variables)
+} catch (err) {
+    /* noop */
+}
+
+const nodeRequestGraphQL: RequestGraphQL = async (query, variables) => {
+    const resp = await fetch(`${SOURCEGRAPH_URL}/.api/graphql`, {
         method: 'POST',
         headers: {
+            ...SOURCEGRAPH_AUTH_HEADERS,
             'Content-Type': 'application/json; charset=utf-8',
         },
         body: JSON.stringify({ query, variables }),
     })
     if (resp.ok) {
-        const result: GraphQLResult<T> = await resp.json()
-        return dataOrThrowErrors<T>(result)
+        return resp.json() as Promise<unknown>
     }
     throw new Error(`HTTP ${resp.status} from GraphQL request`)
+}
+
+export const requestGraphQL = async <T extends GQL.IQuery | GQL.IMutation>(
+    query: string,
+    variables: { [name: string]: unknown }
+): Promise<T> => {
+    const result = (await (extensionHostRequestGraphQL || nodeRequestGraphQL)(query, variables)) as GraphQLResult<T>
+    return dataOrThrowErrors<T>(result)
 }
