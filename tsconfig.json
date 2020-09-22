@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",
+    "lib": ["ES2019"],
     "moduleResolution": "node",
     "sourceMap": true,
     "declaration": true,

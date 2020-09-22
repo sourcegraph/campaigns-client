@@ -3,3 +3,4 @@ package-lock.json
 dist/
 .nyc_output/
 coverage/
+src/types/*.d.ts
