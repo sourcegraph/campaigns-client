@@ -198,6 +198,11 @@ declare namespace GQL {
     namespace: Namespace | null;
 
     /**
+     * Look up a namespace by name, which is a username or organization name.
+     */
+    namespaceByName: Namespace | null;
+
+    /**
      * The repositories a user is authorized to access with the given permission.
      * This isn’t defined in the User type because we store permissions for users
      * that don’t yet exist (i.e. late binding). Only one of "username" or "email"
@@ -523,6 +528,13 @@ declare namespace GQL {
 
   interface INamespaceOnQueryArguments {
     id: string;
+  }
+
+  interface INamespaceByNameOnQueryArguments {
+    /**
+     * The name of the namespace.
+     */
+    name: string;
   }
 
   interface IAuthorizedUserRepositoriesOnQueryArguments {
@@ -8341,7 +8353,9 @@ declare namespace GQL {
 
   interface ICreateChangesetSpecOnMutationArguments {
     /**
-     * The raw changeset spec (as JSON).
+     * The raw changeset spec (as JSON). See
+     * https://sourcegraph.com/github.com/sourcegraph/sourcegraph/-/blob/schema/changeset_spec.schema.json
+     * for the JSON Schema that describes the structure of this input.
      */
     changesetSpec: string;
   }
@@ -8354,7 +8368,9 @@ declare namespace GQL {
     namespace: string;
 
     /**
-     * The campaign spec as YAML (or the equivalent JSON).
+     * The campaign spec as YAML (or the equivalent JSON). See
+     * https://sourcegraph.com/github.com/sourcegraph/sourcegraph/-/blob/schema/campaign_spec.schema.json
+     * for the JSON Schema that describes the structure of this input.
      */
     campaignSpec: string;
 

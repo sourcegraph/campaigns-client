@@ -1,4 +1,4 @@
-import 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch'
 import JSZip from 'jszip'
 import { SOURCEGRAPH_AUTH_HEADERS } from './sourcegraph'
 

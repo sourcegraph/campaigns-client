@@ -1,9 +1,9 @@
 {
   "extends": "@sourcegraph/tsconfig",
   "compilerOptions": {
-    "target": "es2018",
-    "module": "esnext",
-    "lib": ["ES2019"],
+    "target": "ES2018",
+    "module": "ESNext",
+    "lib": ["ES2019", "DOM", "WebWorker.ImportScripts"],
     "moduleResolution": "node",
     "sourceMap": true,
     "declaration": true,

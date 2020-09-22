@@ -12,7 +12,7 @@ export const createCampaignSpec = async ({
     namespaceName: string
     campaignSpec: CampaignSpec
     changesetSpecs: ChangesetSpec[]
-}): Promise<Pick<GQL.ICampaignSpec, 'id' | 'applyURL'>> => {
+}): Promise<Pick<GQL.ICampaignSpec, 'id' | 'applyURL' | 'diffStat'>> => {
     const namespace = (
         await requestGraphQL<GQL.IQuery & { namespaceByName: null | { id: GQLID } }>(
             `
@@ -48,10 +48,15 @@ export const createCampaignSpec = async ({
     return (
         await requestGraphQL<GQL.IMutation>(
             `
-    mutation CreateCampaignSpec($namespace: ID!, campaignSpec: String!, changesetSpecs: [ID!]!) {
+    mutation CreateCampaignSpec($namespace: ID!, $campaignSpec: String!, $changesetSpecs: [ID!]!) {
         createCampaignSpec(namespace: $namespace, campaignSpec: $campaignSpec, changesetSpecs: $changesetSpecs) {
             id
             applyURL
+            diffStat {
+                added
+                changed
+                deleted
+            }
         }
     }`,
             { namespace, campaignSpec: JSON.stringify(campaignSpec), changesetSpecs: changesetSpecIDs }

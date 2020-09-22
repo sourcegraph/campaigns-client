@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch'
+
 interface SuccessGraphQLResult<T extends GQL.IQuery | GQL.IMutation> {
     data: T
     errors: undefined
