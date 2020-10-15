@@ -36,7 +36,8 @@ export const createCampaignSpec = async ({
                         `
         mutation CreateChangesetSpec($changesetSpec: String!) {
             createChangesetSpec(changesetSpec: $changesetSpec) {
-                id
+                ... on HiddenChangesetSpec { id }
+                ... on VisibleChangesetSpec { id }
             }
         }`,
                         { changesetSpec: JSON.stringify(changesetSpec) }
