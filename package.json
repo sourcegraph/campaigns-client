@@ -60,7 +60,7 @@
     "get-graphql-schema": "^2.1.2",
     "gql2ts": "^1.10.1",
     "husky": "^4.2.5",
-    "mocha": "^7.2.0",
+    "mocha": "^9.0.2",
     "nyc": "^15.0.1",
     "prettier": "^2.3.2",
     "semantic-release": "^17.0.6",
