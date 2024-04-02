@@ -55,7 +55,7 @@
     "@sourcegraph/prettierrc": "^3.0.3",
     "@sourcegraph/tsconfig": "^4.0.1",
     "@types/mocha": "9.1.1",
-    "@types/node": "20.12.2",
+    "@types/node": "20.12.3",
     "eslint": "^8.57.0",
     "get-graphql-schema": "^2.1.2",
     "gql2ts": "^1.10.1",
